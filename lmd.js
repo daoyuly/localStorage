@@ -1,5 +1,5 @@
 /**
-* @file 本地模块定义，实现
+* @file 本地模块定义，实现本地文件的模块和amd模块的结合
 * 
 */
 
@@ -9,8 +9,30 @@
 
             var lmd = {
 
-                'version': '0.0.1',
-                'debug': false
+                'version': '0.0.0',
+                'debug': false,
+
+                // @param [文件名，md5] 数组
+                define:function(){
+
+
+
+                },
+
+
+
+                // 文件名 。。。。
+                use:function(){
+
+
+                }
+
+
+
+
+
+
+
             };
 
 
@@ -19,7 +41,12 @@
 
 
 
-            
+
+
+
+
+
+
 
 
             var Stylesheet = {
@@ -48,14 +75,13 @@
                         return;
                     }
                     this._paths[opt.src] = true;
-                    forEach(this._rules, function (modify) {
-                        modify.call(null, opt);
-                    });
+                   
                     var head = document.getElementsByTagName('head')[0];
                     var node = document.createElement('script');
                     node.type = opt.type || 'text/javascript';
                     opt.charset && (node.charset = opt.charset);
                     node.src = opt.src;
+                    node.async = true;
                     node.onload = node.onerror = node.onreadystatechange = function () {
                         if ((!this.readyState || this.readyState === "loaded" || this.readyState === "complete")) {
                             // Ensure only run once and handle memory leak in IE

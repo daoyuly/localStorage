@@ -1,0 +1,145 @@
+<html>
+<head>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+
+    <title></title>
+
+
+
+
+</head>
+<body>
+    <script>
+
+        var key = 'hljs';
+        
+        
+        $.get("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", {}, function (data) {
+
+            var str$ = data;
+
+            
+
+            for (var i = 0; i < 100; i++) {
+                var key = 'hljs' + (+(new Date()));
+                console.time('set');
+                localStorage.setItem(key, 'c');
+                //localStorage.setItem(key, str$);
+                console.timeEnd('set')
+            }
+           
+        });
+        
+       /*
+        var str1 = '<p><br></p>';
+        console.time('str1');
+        localStorage.getItem('hljs1435457013880', str1);
+        console.timeEnd('str1')
+
+
+        
+        console.time('get');
+        localStorage.getItem(key);
+        console.timeEnd('get')
+
+        console.time('str1');
+        localStorage.getItem('str1');
+        console.timeEnd('str1')
+       */
+
+
+        (function (global) {
+
+            var lmd = {
+
+                'version': '0.0.1',
+                'debug': false
+            };
+
+
+            var Stylesheet = {
+                //保存已经发起请求的path路径
+                _paths: [],
+                //保存域名信息
+                _domain: [],
+
+                create: function (opt) {
+                    if (opt.src in this._paths) {
+                        return;
+                    }
+                    this._paths[opt.src] = true;
+                    var head = document.getElementsByTagName('head')[0];
+                    var node = document.createElement('link');
+                    opt.charset && (node.charset = opt.charset);
+                    node.href = this._domain + '/' + opt.src;
+                    node.rel = 'stylesheet';
+                    head.insertBefore(node, head.firstChild);
+                },
+                //设置CSS域名
+                setDomain: function (domain) {
+                    this._domain = domain;
+                }
+            };
+
+            var Script = {
+                //发起script请求
+                create: function (opt) {
+                    if (opt.src in this._paths) {
+                        return;
+                    }
+                    this._paths[opt.src] = true;
+                    forEach(this._rules, function (modify) {
+                        modify.call(null, opt);
+                    });
+                    var head = document.getElementsByTagName('head')[0];
+                    var node = document.createElement('script');
+                    node.type = opt.type || 'text/javascript';
+                    opt.charset && (node.charset = opt.charset);
+                    node.src = opt.src;
+                    node.onload = node.onerror = node.onreadystatechange = function () {
+                        if ((!this.readyState || this.readyState === "loaded" || this.readyState === "complete")) {
+                            // Ensure only run once and handle memory leak in IE
+                            node.onload = node.onerror = node.onreadystatechange = null;
+                            // Remove the script to reduce memory leak
+                            if (node.parentNode && !F.debug) {
+                                head.removeChild(node)
+                            }
+                            // Dereference the node
+                            node = undefined;
+                            opt.loaded && opt.loaded();
+                        }
+                    };
+                    head.insertBefore(node, head.firstChild);
+                },
+                //保存已经发起请求的path路径
+                _paths: {},
+
+                //保存路径规则函数
+                _rules: [],
+
+                //增加路径规则
+                addPathRule: function (modify) {
+                    this._rules.push(modify);
+                }
+            };
+
+
+
+            'lmd' in window || (window.lmd = lmd);
+
+
+
+
+        })(this);
+
+
+        console.log(lmd.version);
+
+
+
+
+
+
+    </script>
+</body>
+</html>
